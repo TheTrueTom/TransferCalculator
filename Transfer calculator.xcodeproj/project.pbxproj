@@ -11,6 +11,8 @@
 		E2880BD21C404CED000177B9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2880BD11C404CED000177B9 /* ViewController.swift */; };
 		E2880BD41C404CED000177B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E2880BD31C404CED000177B9 /* Assets.xcassets */; };
 		E2880BD71C404CED000177B9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2880BD51C404CED000177B9 /* Main.storyboard */; };
+		E2880BDF1C404D07000177B9 /* ATC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2880BDE1C404D07000177B9 /* ATC.swift */; };
+		E29120451C4113E100FB8DD7 /* ParticleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29120441C4113E100FB8DD7 /* ParticleView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +22,8 @@
 		E2880BD31C404CED000177B9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E2880BD61C404CED000177B9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E2880BD81C404CED000177B9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E2880BDE1C404D07000177B9 /* ATC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ATC.swift; sourceTree = "<group>"; };
+		E29120441C4113E100FB8DD7 /* ParticleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParticleView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +58,8 @@
 			children = (
 				E2880BCF1C404CED000177B9 /* AppDelegate.swift */,
 				E2880BD11C404CED000177B9 /* ViewController.swift */,
+				E2880BDE1C404D07000177B9 /* ATC.swift */,
+				E29120441C4113E100FB8DD7 /* ParticleView.swift */,
 				E2880BD31C404CED000177B9 /* Assets.xcassets */,
 				E2880BD51C404CED000177B9 /* Main.storyboard */,
 				E2880BD81C404CED000177B9 /* Info.plist */,
@@ -93,6 +99,7 @@
 				TargetAttributes = {
 					E2880BCB1C404CED000177B9 = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = 2X7V934S42;
 					};
 				};
 			};
@@ -131,7 +138,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E2880BDF1C404D07000177B9 /* ATC.swift in Sources */,
 				E2880BD21C404CED000177B9 /* ViewController.swift in Sources */,
+				E29120451C4113E100FB8DD7 /* ParticleView.swift in Sources */,
 				E2880BD01C404CED000177B9 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -218,6 +227,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -227,6 +237,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};
 			name = Release;
 		};
@@ -234,11 +245,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = "Transfer calculator/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "thetruetom.Transfer-calculator";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -246,6 +260,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = "Transfer calculator/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
@@ -273,6 +289,7 @@
 				E2880BDD1C404CED000177B9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
