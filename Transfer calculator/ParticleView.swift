@@ -31,6 +31,7 @@ class ParticleView: NSView {
     
     override func drawRect(dirtyRect: NSRect) {
         
+        // Body of the particle
         NSColor.whiteColor().set()
         NSBezierPath(ovalInRect: self.bounds).fill()
         
