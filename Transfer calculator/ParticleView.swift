@@ -47,8 +47,8 @@ class ParticleView: NSView {
                     donorColor.set()
                 }
                 
-                let x = CGFloat(molecule.x) / CGFloat(particule.radius) / 2 * self.bounds.size.width + self.bounds.size.width / 2 - 1
-                let y = CGFloat(molecule.y) / CGFloat(particule.radius) / 2 * self.bounds.size.height + self.bounds.size.height / 2 - 1
+                let x = CGFloat(molecule.x / particule.radius) / 2 * self.bounds.size.width + self.bounds.size.width / 2 - 1
+                let y = CGFloat(molecule.y / particule.radius) / 2 * self.bounds.size.height + self.bounds.size.height / 2 - 1
                 NSBezierPath(rect: NSRect(x: x, y: y, width: 2, height: 2)).fill()
             }
         }
