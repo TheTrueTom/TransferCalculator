@@ -34,6 +34,7 @@ class ParticleView: NSView {
         NSColor.whiteColor().set()
         NSBezierPath(ovalInRect: self.bounds).fill()
         
+        // Outer rim of the particle
         NSColor.grayColor().set()
         NSBezierPath(ovalInRect: self.bounds).stroke()
         
