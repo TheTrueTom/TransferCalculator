@@ -33,6 +33,7 @@ class Job: Equatable {
     var currentParticule: Particule?
     
     var distancesResult: DistancesResult = ["DonDon": [], "DonAcc": [], "AccAcc": []]
+    var kTResult: [(distance: Double, kT: Double)] = []
     
     var queue: NSOperationQueue?
     
@@ -193,6 +194,7 @@ class Job: Equatable {
             self.queue?.waitUntilAllOperationsAreFinished()
             
             dispatch_async(dispatch_get_main_queue()) {
+                self.kTResult = result
                 finalCompletionHandler?(result)
             }
         }
