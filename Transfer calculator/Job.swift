@@ -20,19 +20,25 @@ typealias DistancesResult = [String: [Double]]
 
 class Job: Equatable {
     var creationDate: NSDate = NSDate()
-    var description: String = "Experiment"
+    var description: String = "Experiment #1"
     var particleRadius: Double = 25
     var donors: Int = 150
     var acceptors: Int = 150
     var exclusionRadius: Double = 1
     var dimerProbability: Double = 0.1
     var repeats: Int = 10
-    var kTCalculations: kTJob = .DonorAcceptor
+    var kTCalculations: kTJob = .None
     var status: JobStatus = .Queued
+    
+    var currentParticule: Particule?
     
     var distancesResult: DistancesResult = ["DonDon": [], "DonAcc": [], "AccAcc": []]
     
-    var queue: NSOperationQueue!
+    var queue: NSOperationQueue?
+    
+    func cancelAll() {
+        queue?.cancelAllOperations()
+    }
     
     /**
      Generate one particule with the parameters taken from the job. Parameters taken are radius, number of donors and acceptors, exclusion radius and dimer probability.
@@ -43,6 +49,8 @@ class Job: Equatable {
     func generateParticule() -> Particule? {
         
         let particule = Particule(radius: particleRadius, donors: donors, acceptors: acceptors, exclusionRadius: exclusionRadius, dimerProbability: dimerProbability)
+        
+        currentParticule = particule
         
         return particule
     }
@@ -56,7 +64,7 @@ class Job: Equatable {
      - returns: Dictionary of an Array of distances
      */
     
-    func calculateAllDistances(particule: Particule, limit: Int = 10) -> [String: [Double]] {
+    class func calculateAllDistances(particule: Particule, limit: Int = 10) -> [String: [Double]] {
         var result: [String: [Double]] = ["DonDon": [], "DonAcc": [], "AccAcc": []]
         
         let donDon = particule.getMeanSortedDistances(.DonorDonor, limit: limit)
@@ -135,21 +143,23 @@ class Job: Equatable {
         for repetition in 1...repeats {
             let operation = NSBlockOperation(block: {
                 if let particule = self.generateParticule() {
-                    let preResult = self.calculateAllDistances(particule)
+                    let preResult = Job.calculateAllDistances(particule)
                     
                     NSOperationQueue.mainQueue().addOperationWithBlock {
                         repeatResults.append(preResult)
                         
-                        print("Repetition \(repetition)/\(repeats) complete")
+                        print("Distance repetition \(repetition)/\(repeats) complete")
                     }
                 }
             })
             
-            queue.addOperation(operation)
+            if let queue = queue {
+                queue.addOperation(operation)
+            }
         }
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-            self.queue.waitUntilAllOperationsAreFinished()
+            self.queue?.waitUntilAllOperationsAreFinished()
             finalCompletionHandler?(self.distancesResult)
         }
     }
@@ -168,55 +178,24 @@ class Job: Equatable {
                     NSOperationQueue.mainQueue().addOperationWithBlock {
                         result.appendContentsOf(subResult)
                         
-                        print("Repetition \(repetition)/\(repeats) complete")
+                        print("kT repetition \(repetition)/\(repeats) complete")
                         repeatCompletionHandler?()
                     }
                 }
             })
             
-            queue.addOperation(operation)
+            if let queue = queue {
+                queue.addOperation(operation)
+            }
         }
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-            self.queue.waitUntilAllOperationsAreFinished()
+            self.queue?.waitUntilAllOperationsAreFinished()
             
             dispatch_async(dispatch_get_main_queue()) {
                 finalCompletionHandler?(result)
             }
-            
-            /*
-            var csvData = "distance (nm), kT,\n"
-            
-            for element in result {
-                csvData += "\(element.distance), \(element.kT),\n"
-            }
-            
-            dispatch_async(dispatch_get_main_queue()) {
-                let saveDialog = NSSavePanel()
-                
-                saveDialog.message = "Please select a path where to save the kT as a function of distance data."
-                saveDialog.allowsOtherFileTypes = false
-                saveDialog.canCreateDirectories = true
-                saveDialog.nameFieldStringValue = "untitled.csv"
-                saveDialog.title = "Saving Data..."
-                
-                let saveResult = saveDialog.runModal()
-                
-                if saveResult == NSFileHandlingPanelOKButton {
-                    if let path = saveDialog.URL?.path {
-                        NSFileManager.defaultManager().createFileAtPath(path, contents: nil, attributes: nil)
-                        do {
-                            try csvData.writeToFile(path, atomically: true, encoding: NSUTF8StringEncoding)
-                        } catch let error as NSError {
-                            let alert = NSAlert(error: error)
-                            alert.runModal()
-                        }
-                    }
-                }
-            }*/
-            
         }
-        
     }
 }
 
