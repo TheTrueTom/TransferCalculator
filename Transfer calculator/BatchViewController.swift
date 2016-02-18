@@ -13,7 +13,7 @@ class BatchViewController: NSViewController {
     
     @IBOutlet weak var stopButton: NSButton!
     @IBAction func stopJobList(sender: AnyObject) {
-        queue?.cancelAllOperations()
+        queue.cancelAllOperations()
         currentJob?.status = .Cancelled
         jobListTable.reloadData()
     }
@@ -64,7 +64,7 @@ class BatchViewController: NSViewController {
     @IBOutlet weak var progressIndicator: NSProgressIndicator!
     
     var jobList: [Job] = [Job()]
-    var queue: NSOperationQueue?
+    var queue: NSOperationQueue = NSOperationQueue()
     var currentJob: Job?
     
     var distancesResultsList = [DistancesResult]()
@@ -76,15 +76,14 @@ class BatchViewController: NSViewController {
         
         playButton.enabled = true
         
+        queue.maxConcurrentOperationCount = 1
+        
         pathControl.URL = NSFileManager.defaultManager().URLsForDirectory(.DesktopDirectory, inDomains: .UserDomainMask).first
     }
     
     func processJobList(completionHandler: (() -> Void)? = nil) {
         stopButton.enabled = true
         playButton.enabled = false
-        
-        queue = NSOperationQueue()
-        queue?.maxConcurrentOperationCount = 1
         
         for job in jobList {
             let operation = NSBlockOperation(block: {
@@ -147,7 +146,7 @@ class BatchViewController: NSViewController {
                 }
             })
             
-            queue?.addOperation(operation)
+            queue.addOperation(operation)
         }
     }
 }

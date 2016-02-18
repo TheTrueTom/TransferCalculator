@@ -87,6 +87,10 @@ class SummaryBuilder {
         
         let maximum = max(donDon.count, donAcc.count, accAcc.count)
         
+        if maximum == 0 {
+            return "<p>No distance results available</p>"
+        }
+        
         var zerosToAdd = [Int]()
         
         for array in [donDon, donAcc, accAcc] {
