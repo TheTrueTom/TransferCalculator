@@ -34,8 +34,6 @@ class Particule {
         
         self.radius = radius
         
-        print("|- Particule radius set at \(radius) nm")
-        
        while self.acceptorsNumber < acceptors {
            let candidate = Molecule(inParticleOfRadius: radius, withDimerProbability: dimerProbability)
            
@@ -54,8 +52,6 @@ class Particule {
                acceptorsNumber += 1
            } 
        }
-       
-       print("|- \(acceptors) acceptors placed")
        
        while self.donorsNumber < donors {
            let candidate = Molecule(inParticleOfRadius: radius, withDimerProbability: dimerProbability)
@@ -79,8 +75,6 @@ class Particule {
                }
             }
        }
-       
-       print("|- \(donors) donors placed")
     }
     
     func getMeanSortedDistances(relationType: RelationType, limit: Int = 10) -> [Double] {

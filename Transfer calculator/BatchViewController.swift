@@ -21,10 +21,13 @@ class BatchViewController: NSViewController {
     @IBOutlet weak var playButton: NSButton!
     @IBAction func startJobList(sender: AnyObject) {
         processJobList() {
-            print(self.distancesResultsList)
-            print(self.kTResultsList)
+            if let url = self.pathControl.URL  {
+                SummaryBuilder.createReport(self.jobList, url: url)
+            }
         }
     }
+    
+    @IBOutlet weak var pathControl: NSPathControl!
     
     @IBOutlet weak var jobListTable: NSTableView!
     
@@ -49,6 +52,15 @@ class BatchViewController: NSViewController {
         }
     }
     
+    @IBAction func openJobList(sender: AnyObject) {
+        jobList = CSVEngine.getJobListFromCSV()
+        jobListTable.reloadData()
+    }
+    
+    @IBAction func saveJobList(sender: AnyObject) {
+        CSVEngine.saveAsCSV(jobList)
+    }
+    
     @IBOutlet weak var progressIndicator: NSProgressIndicator!
     
     var jobList: [Job] = [Job()]
@@ -63,6 +75,8 @@ class BatchViewController: NSViewController {
         jobListTable.setDataSource(self)
         
         playButton.enabled = true
+        
+        pathControl.URL = NSFileManager.defaultManager().URLsForDirectory(.DesktopDirectory, inDomains: .UserDomainMask).first
     }
     
     func processJobList(completionHandler: (() -> Void)? = nil) {
@@ -165,7 +179,7 @@ extension BatchViewController: NSTableViewDelegate, NSTableViewDataSource {
             case "repeatsCol":
                 return configureLabel("\(job.repeats)", row: row, tableColumnIdentifier: identifier)
             case "kTCol":
-                return configurePopUpButton(job.status, row: row, tableColumnIdentifier: identifier)
+                return configurePopUpButton(job, row: row, tableColumnIdentifier: identifier)
             case "statusCol":
                 return configureStatusImage(job)
             default:
@@ -204,13 +218,25 @@ extension BatchViewController: NSTableViewDelegate, NSTableViewDataSource {
         return imageView
     }
     
-    func configurePopUpButton(status: JobStatus, row: Int = 0, tableColumnIdentifier: String = "") -> NSPopUpButton {
+    func configurePopUpButton(job: Job, row: Int = 0, tableColumnIdentifier: String = "") -> NSPopUpButton {
         let popup = CellPopUpButton()
         popup.action = "popUpButtonDidChange:"
         popup.row = row
         popup.columnIdentifier = tableColumnIdentifier
         popup.addItemsWithTitles(["None","Donor-Donor","Donor-Acceptor","Acceptor-Acceptor"])
         
+        let title: String!
+        if job.kTCalculations == .None {
+            title = "None"
+        } else if job.kTCalculations == .DonorDonor {
+            title = "Donor-Donor"
+        } else if job.kTCalculations == .DonorAcceptor {
+            title = "Donor-Acceptor"
+        } else {
+            title = "Acceptor-Acceptor"
+        }
+        
+        popup.selectItemWithTitle(title)
         return popup
     }
     
@@ -225,7 +251,7 @@ extension BatchViewController: NSTableViewDelegate, NSTableViewDataSource {
 
 extension BatchViewController: NSTextFieldDelegate {
     override func controlTextDidEndEditing(obj: NSNotification) {
-        print(obj.object)
+        
         if let cellTextField = obj.object as? CellTextField {
             let job = jobList[cellTextField.row]
             
