@@ -39,6 +39,14 @@
     color: #666;
   }
 
+  .result td:nth-child(1) {
+    width: 60px;
+  }
+
+  .result td:nth-child(1n+1) {
+    width: 200px;
+  }
+
   .result tr {
     height: 30px;
   }
