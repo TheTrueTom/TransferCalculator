@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Results Summary</title>
+  <style>
+  body {
+    font-family: 'Helvetica', sans-serif;
+    margin-top: 50px;
+  }
+
+  .experiment {
+    width: 100%;
+    background-color: #eee;
+    margin-top: 40px;
+    padding-left: 80px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .parameters td:nth-child(odd) {
+    font-size: 1em;
+    color: #666;
+    width: 180px;
+  }
+
+  .parameters td:nth-child(even) {
+    font-size: 0.9em;
+    font-weight: bold;
+    color: #444;
+    width: 150px;
+  }
+
+  .result tr:nth-child(odd) {
+    background-color: #ddd;
+  }
+
+  .result tr:nth-child(1), .result td:nth-child(1) {
+    font-weight: bold;
+    color: #666;
+  }
+
+  .result tr {
+    height: 30px;
+  }
+
+  p {
+    color: #666;
+  }
+  </style>
+</head>
+<body>
+  <center><h1>Results Summary</h1></center>
