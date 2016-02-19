@@ -131,7 +131,7 @@ class Job: Equatable {
      - parameter finalCompletionHandler: Block to be executed once all the repetitions are finished
      */
     
-    func getAverageDistances(repeats: Int, repeatCompletionHandler: (() -> Void)? = nil, finalCompletionHandler: (DistancesResult -> Void)? = nil) {
+    func getAverageDistances(repeats: Int, repeatCompletionHandler: (() -> Void)? = nil) -> DistancesResult {
         
         var repeatResults = [[String: [Double]]]() {
             didSet {
@@ -159,13 +159,12 @@ class Job: Equatable {
             }
         }
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-            self.queue?.waitUntilAllOperationsAreFinished()
-            finalCompletionHandler?(self.distancesResult)
-        }
+        self.queue?.waitUntilAllOperationsAreFinished()
+        
+        return self.distancesResult
     }
     
-    func maxKTAsCSV(relationType: RelationType, repeats: Int, repeatCompletionHandler: (() -> Void)? = nil, finalCompletionHandler: ([(distance: Double, kT: Double)] -> Void)? = nil) {
+    func maxKTAsCSV(relationType: RelationType, repeats: Int, repeatCompletionHandler: (() -> Void)? = nil) -> [(distance: Double, kT: Double)] {
         
         var result = [(distance: Double, kT: Double)]()
         
@@ -190,14 +189,13 @@ class Job: Equatable {
             }
         }
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-            self.queue?.waitUntilAllOperationsAreFinished()
-            
-            dispatch_async(dispatch_get_main_queue()) {
-                self.kTResult = result
-                finalCompletionHandler?(result)
-            }
+        self.queue?.waitUntilAllOperationsAreFinished()
+        
+        dispatch_async(dispatch_get_main_queue()) {
+            self.kTResult = result
         }
+        
+        return result
     }
 }
 

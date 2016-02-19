@@ -22,7 +22,7 @@ class SummaryBuilder {
         
         do {
             try result.writeToFile(newPath, atomically: true, encoding: NSUTF8StringEncoding)
-            NSWorkspace.sharedWorkspace().openFile(newPath)
+            //NSWorkspace.sharedWorkspace().openFile(newPath)
         } catch let error as NSError {
             let alert = NSAlert(error: error)
             alert.runModal()

@@ -76,14 +76,15 @@ class BatchViewController: NSViewController {
         
         playButton.enabled = true
         
-        queue.maxConcurrentOperationCount = 1
-        
         pathControl.URL = NSFileManager.defaultManager().URLsForDirectory(.DesktopDirectory, inDomains: .UserDomainMask).first
     }
     
     func processJobList(completionHandler: (() -> Void)? = nil) {
         stopButton.enabled = true
         playButton.enabled = false
+        
+        queue = NSOperationQueue()
+        queue.maxConcurrentOperationCount = 1
         
         for job in jobList {
             let operation = NSBlockOperation(block: {
@@ -99,28 +100,24 @@ class BatchViewController: NSViewController {
                 
                 // Calcul des distances
                 
-                job.getAverageDistances(job.repeats, repeatCompletionHandler: {
+                let distancesResult = job.getAverageDistances(job.repeats, repeatCompletionHandler: {
                         NSOperationQueue.mainQueue().addOperationWithBlock {
-                            if job.kTCalculations == .None {
-                                self.progressIndicator.incrementBy(1)
-                            } else {
-                                self.progressIndicator.incrementBy(0.5)
-                            }
+                            self.progressIndicator.incrementBy((job.kTCalculations == .None) ? 1 : 0.5)
                         }
-                    }, finalCompletionHandler: { distancesResult in
-                        NSOperationQueue.mainQueue().addOperationWithBlock {
-                            self.distancesResultsList.append(distancesResult)
+                    })
+                
+                NSOperationQueue.mainQueue().addOperationWithBlock {
+                    self.distancesResultsList.append(distancesResult)
+                    
+                    if job.kTCalculations == .None {
+                        job.status = .Finished
                         
-                            if job.kTCalculations == .None {
-                                job.status = .Finished
-                                self.jobListTable.reloadData()
-                                
-                                self.stopButton.enabled = false
-                                self.playButton.enabled = true
-                                completionHandler?()
-                            }
-                        }
-                })
+                        self.jobListTable.reloadData()
+                        
+                        completionHandler?()
+                    }
+                }
+                
                 
                 // Calcul des kT
                 
@@ -128,25 +125,33 @@ class BatchViewController: NSViewController {
                     
                     let relation: RelationType = (job.kTCalculations == .DonorDonor) ? .DonorDonor : ((job.kTCalculations == .DonorAcceptor) ? .DonorAcceptor : .AcceptorAcceptor)
                     
-                    job.maxKTAsCSV(relation, repeats: job.repeats, repeatCompletionHandler: {
+                    let kTResults = job.maxKTAsCSV(relation, repeats: job.repeats, repeatCompletionHandler: {
                             NSOperationQueue.mainQueue().addOperationWithBlock {
                                 self.progressIndicator.incrementBy(0.5)
                             }
-                        }, finalCompletionHandler: { kTResults in
-                            NSOperationQueue.mainQueue().addOperationWithBlock {
-                                self.kTResultsList.append(kTResults)
-                                job.status = .Finished
-                                self.jobListTable.reloadData()
-                                
-                                self.stopButton.enabled = false
-                                self.playButton.enabled = true
-                                completionHandler?()
-                            }
-                    })
+                        })
+                    
+                    NSOperationQueue.mainQueue().addOperationWithBlock {
+                        self.kTResultsList.append(kTResults)
+                        job.status = .Finished
+                        
+                        self.jobListTable.reloadData()
+                        
+                        completionHandler?()
+                    }
                 }
             })
             
             queue.addOperation(operation)
+        }
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+            self.queue.waitUntilAllOperationsAreFinished()
+        
+            dispatch_async(dispatch_get_main_queue()) {
+                self.stopButton.enabled = false
+                self.playButton.enabled = true
+            }
         }
     }
 }

@@ -50,15 +50,21 @@ class ViewController: NSViewController {
             self.setCalculatingStatus()
             self.cancelButton.enabled = true
             
-            job.getAverageDistances(job.repeats, repeatCompletionHandler: {
-                    self.progressIndicator.incrementBy(1)
-                    self.distancesResult = job.distancesResult
-                    self.particleView.particule = job.currentParticule
-                }, finalCompletionHandler: { distancesResult in
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+                let _ = job.getAverageDistances(job.repeats, repeatCompletionHandler: {
+                    dispatch_async(dispatch_get_main_queue()) {
+                        self.progressIndicator.incrementBy(1)
+                        self.distancesResult = job.distancesResult
+                        self.particleView.particule = job.currentParticule
+                    }
+                })
+                
+                dispatch_async(dispatch_get_main_queue()) {
                     self.setAvailableStatus()
                     self.changeUIAvailability(true)
                     self.cancelButton.enabled = false
-            })
+                }
+            }
         }
     }
     
@@ -76,23 +82,30 @@ class ViewController: NSViewController {
             self.setCalculatingStatus()
             self.cancelButton.enabled = true
             
-            job.maxKTAsCSV(relation, repeats: job.repeats, repeatCompletionHandler: {
-                    self.progressIndicator.incrementBy(1)
-                }, finalCompletionHandler: { result in
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+                let result = job.maxKTAsCSV(relation, repeats: job.repeats, repeatCompletionHandler: {
+                    dispatch_async(dispatch_get_main_queue()) {
+                        self.progressIndicator.incrementBy(1)
+                        self.particleView.particule = job.currentParticule
+                    }
+                })
+                
+                dispatch_async(dispatch_get_main_queue()) {
                     var csvData = "distance (nm), kT,\n"
-                    
+                
                     for element in result {
                         csvData += "\(element.distance), \(element.kT),\n"
                     }
-                    
+                
                     let saveDialog = NSSavePanel()
-                    
+                
                     saveDialog.message = "Please select a path where to save the kT as a function of distance data."
                     saveDialog.allowsOtherFileTypes = false
                     saveDialog.canCreateDirectories = true
                     saveDialog.nameFieldStringValue = "untitled.csv"
                     saveDialog.title = "Saving Data..."
-                    
+                
+                
                     let saveResult = saveDialog.runModal()
                     
                     if saveResult == NSFileHandlingPanelOKButton {
@@ -109,7 +122,8 @@ class ViewController: NSViewController {
                     } else {
                         self.changeUIAvailability(true)
                     }
-            })
+                }
+            }
         }
     }
     
