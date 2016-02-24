@@ -154,6 +154,10 @@ class SummaryBuilder {
             } catch let error as NSError {
                 let alert = NSAlert(error: error)
                 alert.runModal()
+            } catch {
+                let alert = NSAlert()
+                alert.messageText = "Unknown error"
+                alert.runModal()
             }
             
         }

@@ -166,8 +166,6 @@ class Job: Equatable {
     
     func maxKTAsCSV(relationType: RelationType, repeats: Int, repeatCompletionHandler: (() -> Void)? = nil) -> [(distance: Double, kT: Double)] {
         
-        var result = [(distance: Double, kT: Double)]()
-        
         queue = NSOperationQueue()
         
         for repetition in 1...repeats {
@@ -176,7 +174,7 @@ class Job: Equatable {
                     let subResult = particule.getMaxKTAsFunctionOfDistance(relationType)
                     
                     NSOperationQueue.mainQueue().addOperationWithBlock {
-                        result.appendContentsOf(subResult)
+                        self.kTResult.appendContentsOf(subResult)
                         
                         print("kT repetition \(repetition)/\(repeats) complete")
                         repeatCompletionHandler?()
@@ -191,11 +189,7 @@ class Job: Equatable {
         
         self.queue?.waitUntilAllOperationsAreFinished()
         
-        dispatch_async(dispatch_get_main_queue()) {
-            self.kTResult = result
-        }
-        
-        return result
+        return self.kTResult
     }
 }
 
