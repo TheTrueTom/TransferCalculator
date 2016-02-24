@@ -146,10 +146,12 @@ class Job: Equatable {
                 if let particule = self.generateParticule() {
                     let preResult = Job.calculateAllDistances(particule)
                     
-                    NSOperationQueue.mainQueue().addOperationWithBlock {
+                    dispatch_sync(dispatch_get_main_queue()) {
                         repeatResults.append(preResult)
                         
-                        print("Distance repetition \(repetition)/\(repeats) complete")
+                        #if DEBUG
+                            print("Distance repetition \(repetition)/\(repeats) complete")
+                        #endif
                     }
                 }
             })
@@ -173,10 +175,12 @@ class Job: Equatable {
                 if let particule = self.generateParticule() {
                     let subResult = particule.getMaxKTAsFunctionOfDistance(relationType)
                     
-                    NSOperationQueue.mainQueue().addOperationWithBlock {
+                    dispatch_sync(dispatch_get_main_queue()) {
                         self.kTResult.appendContentsOf(subResult)
                         
+                        #if DEBUG
                         print("kT repetition \(repetition)/\(repeats) complete")
+                        #endif
                         repeatCompletionHandler?()
                     }
                 }
