@@ -8,6 +8,7 @@
 
 import XCTest
 
+
 class Transfer_calculatorTests: XCTestCase {
     
     override func setUp() {
@@ -20,9 +21,13 @@ class Transfer_calculatorTests: XCTestCase {
         super.tearDown()
     }
     
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testAverageDicOfArrays() {
+        let entryDic: [Int: [Double]] = [1: [1, 2, 3], 2: [1, 2, 3], 3: [1, 2, 3]]
+        let resultDic: [Double] = [1, 2, 3]
+        
+        let testDic = Utils.averageDicOfArrays(entryDic)
+        
+        XCTAssert(resultDic == testDic)
     }
     
     func testPerformanceExample() {
