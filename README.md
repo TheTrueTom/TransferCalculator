@@ -18,7 +18,7 @@ Generates particles with randomly placed donor and/or acceptor luminescent dye, 
 - UI can get unresponsive under certain conditions
 - When stopping a list of jobs in batch mode, the current job is not cancelled, only the following jobs are.
 - When doing more than a 1000 repeats the UI can get delayed, actual progress can be infered from the report which is updated after every job
-- 
+
 ## Licence
 
 The Transfer Calculator is released under the [MIT License](LICENSE.md).
