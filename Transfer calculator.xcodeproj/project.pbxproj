@@ -14,6 +14,9 @@
 		E23AD86C1C750B9600A4504D /* CellPopUpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23AD86B1C750B9600A4504D /* CellPopUpButton.swift */; };
 		E23AD86E1C75211600A4504D /* SummaryBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23AD86D1C75211500A4504D /* SummaryBuilder.swift */; };
 		E23AD8701C7616D500A4504D /* model-header.txt in Resources */ = {isa = PBXBuildFile; fileRef = E23AD86F1C7616D500A4504D /* model-header.txt */; };
+		E251E2EA1C7F5D49005D4EC0 /* LICENCE.md in Sources */ = {isa = PBXBuildFile; fileRef = E251E2E81C7F5D49005D4EC0 /* LICENCE.md */; };
+		E251E2EB1C7F5D49005D4EC0 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = E251E2E91C7F5D49005D4EC0 /* README.md */; };
+		E251E2F31C7F5DA9005D4EC0 /* Transfer_calculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E251E2F21C7F5DA9005D4EC0 /* Transfer_calculatorTests.swift */; };
 		E27E69481C76467900C4A84F /* CSVEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27E69471C76467900C4A84F /* CSVEngine.swift */; };
 		E2880BD01C404CED000177B9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2880BCF1C404CED000177B9 /* AppDelegate.swift */; };
 		E2880BD21C404CED000177B9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2880BD11C404CED000177B9 /* ViewController.swift */; };
@@ -23,6 +26,16 @@
 		E29120451C4113E100FB8DD7 /* ParticleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29120441C4113E100FB8DD7 /* ParticleView.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		E251E2F51C7F5DA9005D4EC0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E2880BC41C404CEC000177B9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E2880BCB1C404CED000177B9;
+			remoteInfo = "Transfer calculator";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		E23AD8631C739A8C00A4504D /* BatchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BatchViewController.swift; sourceTree = "<group>"; };
 		E23AD8651C73A80100A4504D /* Job.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Job.swift; sourceTree = "<group>"; };
@@ -31,6 +44,11 @@
 		E23AD86B1C750B9600A4504D /* CellPopUpButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellPopUpButton.swift; sourceTree = "<group>"; };
 		E23AD86D1C75211500A4504D /* SummaryBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SummaryBuilder.swift; sourceTree = "<group>"; };
 		E23AD86F1C7616D500A4504D /* model-header.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "model-header.txt"; sourceTree = "<group>"; };
+		E251E2E81C7F5D49005D4EC0 /* LICENCE.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = LICENCE.md; sourceTree = "<group>"; };
+		E251E2E91C7F5D49005D4EC0 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		E251E2F01C7F5DA9005D4EC0 /* Transfer calculatorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Transfer calculatorTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E251E2F21C7F5DA9005D4EC0 /* Transfer_calculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transfer_calculatorTests.swift; sourceTree = "<group>"; };
+		E251E2F41C7F5DA9005D4EC0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E27E69471C76467900C4A84F /* CSVEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CSVEngine.swift; sourceTree = "<group>"; };
 		E2880BCC1C404CED000177B9 /* Transfer calculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Transfer calculator.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2880BCF1C404CED000177B9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -43,6 +61,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		E251E2ED1C7F5DA9005D4EC0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E2880BC91C404CED000177B9 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -63,10 +88,22 @@
 			name = "Custom UI Elements";
 			sourceTree = "<group>";
 		};
+		E251E2F11C7F5DA9005D4EC0 /* Transfer calculatorTests */ = {
+			isa = PBXGroup;
+			children = (
+				E251E2F21C7F5DA9005D4EC0 /* Transfer_calculatorTests.swift */,
+				E251E2F41C7F5DA9005D4EC0 /* Info.plist */,
+			);
+			path = "Transfer calculatorTests";
+			sourceTree = "<group>";
+		};
 		E2880BC31C404CEC000177B9 = {
 			isa = PBXGroup;
 			children = (
+				E251E2E81C7F5D49005D4EC0 /* LICENCE.md */,
+				E251E2E91C7F5D49005D4EC0 /* README.md */,
 				E2880BCE1C404CED000177B9 /* Transfer calculator */,
+				E251E2F11C7F5DA9005D4EC0 /* Transfer calculatorTests */,
 				E2880BCD1C404CED000177B9 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -75,6 +112,7 @@
 			isa = PBXGroup;
 			children = (
 				E2880BCC1C404CED000177B9 /* Transfer calculator.app */,
+				E251E2F01C7F5DA9005D4EC0 /* Transfer calculatorTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -102,6 +140,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		E251E2EF1C7F5DA9005D4EC0 /* Transfer calculatorTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E251E2F71C7F5DA9005D4EC0 /* Build configuration list for PBXNativeTarget "Transfer calculatorTests" */;
+			buildPhases = (
+				E251E2EC1C7F5DA9005D4EC0 /* Sources */,
+				E251E2ED1C7F5DA9005D4EC0 /* Frameworks */,
+				E251E2EE1C7F5DA9005D4EC0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E251E2F61C7F5DA9005D4EC0 /* PBXTargetDependency */,
+			);
+			name = "Transfer calculatorTests";
+			productName = "Transfer calculatorTests";
+			productReference = E251E2F01C7F5DA9005D4EC0 /* Transfer calculatorTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		E2880BCB1C404CED000177B9 /* Transfer calculator */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = E2880BDB1C404CED000177B9 /* Build configuration list for PBXNativeTarget "Transfer calculator" */;
@@ -129,6 +185,10 @@
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = "Thomas Brichart";
 				TargetAttributes = {
+					E251E2EF1C7F5DA9005D4EC0 = {
+						CreatedOnToolsVersion = 7.2.1;
+						TestTargetID = E2880BCB1C404CED000177B9;
+					};
 					E2880BCB1C404CED000177B9 = {
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = 2X7V934S42;
@@ -149,11 +209,19 @@
 			projectRoot = "";
 			targets = (
 				E2880BCB1C404CED000177B9 /* Transfer calculator */,
+				E251E2EF1C7F5DA9005D4EC0 /* Transfer calculatorTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		E251E2EE1C7F5DA9005D4EC0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E2880BCA1C404CED000177B9 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -167,6 +235,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		E251E2EC1C7F5DA9005D4EC0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E251E2F31C7F5DA9005D4EC0 /* Transfer_calculatorTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E2880BC81C404CED000177B9 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -175,10 +251,12 @@
 				E23AD8661C73A80100A4504D /* Job.swift in Sources */,
 				E23AD86E1C75211600A4504D /* SummaryBuilder.swift in Sources */,
 				E27E69481C76467900C4A84F /* CSVEngine.swift in Sources */,
+				E251E2EB1C7F5D49005D4EC0 /* README.md in Sources */,
 				E2880BDF1C404D07000177B9 /* ATC.swift in Sources */,
 				E2880BD21C404CED000177B9 /* ViewController.swift in Sources */,
 				E23AD86C1C750B9600A4504D /* CellPopUpButton.swift in Sources */,
 				E29120451C4113E100FB8DD7 /* ParticleView.swift in Sources */,
+				E251E2EA1C7F5D49005D4EC0 /* LICENCE.md in Sources */,
 				E2880BD01C404CED000177B9 /* AppDelegate.swift in Sources */,
 				E23AD8681C73B38E00A4504D /* NSAnimatedImageView.swift in Sources */,
 				E23AD86A1C7506F300A4504D /* CellTextField.swift in Sources */,
@@ -186,6 +264,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E251E2F61C7F5DA9005D4EC0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E2880BCB1C404CED000177B9 /* Transfer calculator */;
+			targetProxy = E251E2F51C7F5DA9005D4EC0 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		E2880BD51C404CED000177B9 /* Main.storyboard */ = {
@@ -199,6 +285,32 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		E251E2F81C7F5DA9005D4EC0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Transfer calculatorTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "thetruetom.Transfer-calculatorTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Transfer calculator.app/Contents/MacOS/Transfer calculator";
+			};
+			name = Debug;
+		};
+		E251E2F91C7F5DA9005D4EC0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Transfer calculatorTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "thetruetom.Transfer-calculatorTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Transfer calculator.app/Contents/MacOS/Transfer calculator";
+			};
+			name = Release;
+		};
 		E2880BD91C404CED000177B9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -313,6 +425,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		E251E2F71C7F5DA9005D4EC0 /* Build configuration list for PBXNativeTarget "Transfer calculatorTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E251E2F81C7F5DA9005D4EC0 /* Debug */,
+				E251E2F91C7F5DA9005D4EC0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		E2880BC71C404CEC000177B9 /* Build configuration list for PBXProject "Transfer calculator" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
