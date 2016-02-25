@@ -14,8 +14,6 @@
 		E23AD86C1C750B9600A4504D /* CellPopUpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23AD86B1C750B9600A4504D /* CellPopUpButton.swift */; };
 		E23AD86E1C75211600A4504D /* SummaryBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23AD86D1C75211500A4504D /* SummaryBuilder.swift */; };
 		E23AD8701C7616D500A4504D /* model-header.txt in Resources */ = {isa = PBXBuildFile; fileRef = E23AD86F1C7616D500A4504D /* model-header.txt */; };
-		E251E2EA1C7F5D49005D4EC0 /* LICENCE.md in Sources */ = {isa = PBXBuildFile; fileRef = E251E2E81C7F5D49005D4EC0 /* LICENCE.md */; };
-		E251E2EB1C7F5D49005D4EC0 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = E251E2E91C7F5D49005D4EC0 /* README.md */; };
 		E251E2F31C7F5DA9005D4EC0 /* Transfer_calculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E251E2F21C7F5DA9005D4EC0 /* Transfer_calculatorTests.swift */; };
 		E27E69481C76467900C4A84F /* CSVEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27E69471C76467900C4A84F /* CSVEngine.swift */; };
 		E2880BD01C404CED000177B9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2880BCF1C404CED000177B9 /* AppDelegate.swift */; };
@@ -251,12 +249,10 @@
 				E23AD8661C73A80100A4504D /* Job.swift in Sources */,
 				E23AD86E1C75211600A4504D /* SummaryBuilder.swift in Sources */,
 				E27E69481C76467900C4A84F /* CSVEngine.swift in Sources */,
-				E251E2EB1C7F5D49005D4EC0 /* README.md in Sources */,
 				E2880BDF1C404D07000177B9 /* ATC.swift in Sources */,
 				E2880BD21C404CED000177B9 /* ViewController.swift in Sources */,
 				E23AD86C1C750B9600A4504D /* CellPopUpButton.swift in Sources */,
 				E29120451C4113E100FB8DD7 /* ParticleView.swift in Sources */,
-				E251E2EA1C7F5D49005D4EC0 /* LICENCE.md in Sources */,
 				E2880BD01C404CED000177B9 /* AppDelegate.swift in Sources */,
 				E23AD8681C73B38E00A4504D /* NSAnimatedImageView.swift in Sources */,
 				E23AD86A1C7506F300A4504D /* CellTextField.swift in Sources */,
