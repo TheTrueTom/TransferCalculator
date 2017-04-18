@@ -196,10 +196,10 @@ class Molecule {
     init(inParticleOfRadius radius: Double, withDimerProbability dimerProbability: Double) {
         self.radius = sqrt(randomDouble()) * radius
         self.theta = -1 + randomDouble() * 2
-        self.phi = 2 * M_PI * randomDouble()
+        self.phi = 2 * .pi * randomDouble()
         
-        self.directionTheta = M_PI * randomDouble()
-        self.directionPhi = 2 * M_PI * randomDouble()
+        self.directionTheta = .pi * randomDouble()
+        self.directionPhi = 2 * .pi * randomDouble()
         
         let random = randomDouble()
         

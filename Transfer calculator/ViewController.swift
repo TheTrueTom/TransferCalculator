@@ -50,7 +50,7 @@ class ViewController: NSViewController {
             self.setCalculatingStatus()
             self.cancelButton.isEnabled = true
             
-            DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async {
+            DispatchQueue.global(qos: .default).async {
                 let _ = job.getAverageDistances(job.repeats, repeatCompletionHandler: {
                     DispatchQueue.main.async {
                         self.progressIndicator.increment(by: 1)
@@ -82,7 +82,7 @@ class ViewController: NSViewController {
             self.setCalculatingStatus()
             self.cancelButton.isEnabled = true
             
-            DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async {
+            DispatchQueue.global(qos: .default).async {
                 let result = job.maxKTAsCSV(relation, repeats: job.repeats, repeatCompletionHandler: {
                     DispatchQueue.main.async {
                         self.progressIndicator.increment(by: 1)
@@ -135,7 +135,7 @@ class ViewController: NSViewController {
         cancelButton.title = "Operation canceled, please wait..."
         setUnavailableStatus()
         
-        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async {
+        DispatchQueue.global(qos: .default).async {
             self.currentJob?.queue?.waitUntilAllOperationsAreFinished()
             self.cancelButton.title = "Cancel All Operations"
             self.setAvailableStatus()

@@ -145,7 +145,7 @@ class BatchViewController: NSViewController {
             queue.addOperation(operation)
         }
         
-        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async {
+        DispatchQueue.global(qos: .default).async {
             self.queue.waitUntilAllOperationsAreFinished()
         
             DispatchQueue.main.async {
@@ -224,7 +224,7 @@ extension BatchViewController: NSTableViewDelegate, NSTableViewDataSource {
     
     func configurePopUpButton(_ job: Job, row: Int = 0, tableColumnIdentifier: String = "") -> NSPopUpButton {
         let popup = CellPopUpButton()
-        popup.action = "popUpButtonDidChange:"
+        popup.action = #selector(BatchViewController.popUpButtonDidChange(_:))
         popup.row = row
         popup.columnIdentifier = tableColumnIdentifier
         popup.addItems(withTitles: ["None","Donor-Donor","Donor-Acceptor","Acceptor-Acceptor"])
