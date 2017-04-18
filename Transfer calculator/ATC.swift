@@ -13,11 +13,11 @@ func randomDouble() -> Double {
 }
 
 enum CalculationType {
-    case Distance, kT
+    case distance, kT
 }
 
 enum RelationType {
-    case DonorDonor, DonorAcceptor, AcceptorAcceptor
+    case donorDonor, donorAcceptor, acceptorAcceptor
 }
 
 class Particule {
@@ -77,7 +77,7 @@ class Particule {
        }
     }
     
-    func getMeanSortedDistances(relationType: RelationType, limit: Int = 10) -> [Double] {
+    func getMeanSortedDistances(_ relationType: RelationType, limit: Int = 10) -> [Double] {
         
         let ranges = getRanges(relationType)
         
@@ -89,13 +89,13 @@ class Particule {
                 var subResult = [Double]()
                 
                 for j in ranges.second {
-                    if let secondMolecule = moleculesList[j] where secondMolecule.molID != firstMolecule.molID {
+                    if let secondMolecule = moleculesList[j], secondMolecule.molID != firstMolecule.molID {
                         subResult.append(firstMolecule.distanceToMolecule(secondMolecule))
                     }
                 }
                 
                 if !subResult.isEmpty {
-                    subResult.sortInPlace { $0 < $1 }
+                    subResult.sort { $0 < $1 }
                     
                     if subResult.count > limit {
                         subResult = Array(subResult[0..<limit])
@@ -125,7 +125,7 @@ class Particule {
         return final
     }
     
-    func getMaxKTAsFunctionOfDistance(relationType: RelationType) -> [(distance: Double, kT: Double)] {
+    func getMaxKTAsFunctionOfDistance(_ relationType: RelationType) -> [(distance: Double, kT: Double)] {
         
         let ranges = getRanges(relationType)
         
@@ -137,7 +137,7 @@ class Particule {
                 var maxKT: Double = 0
                 
                 for j in ranges.second {
-                    if let secondMolecule = moleculesList[j] where secondMolecule.molID != firstMolecule.molID {
+                    if let secondMolecule = moleculesList[j], secondMolecule.molID != firstMolecule.molID {
                         let kT = firstMolecule.kTRelativeToMolecule(secondMolecule)
                         
                         if kT > maxKT {
@@ -156,21 +156,21 @@ class Particule {
         return result
     }
     
-    func getRanges(relationType: RelationType) -> (first: Range<Int>, second: Range<Int>) {
+    func getRanges(_ relationType: RelationType) -> (first: CountableRange<Int>, second: CountableRange<Int>) {
         
-        let firstRange: Range<Int>!
-        let secondRange: Range<Int>!
+        let firstRange: CountableRange<Int>!
+        let secondRange: CountableRange<Int>!
         
         switch relationType {
-        case .DonorDonor:
-            firstRange = (donorsNumber == 0) ? Range(start: 0, end: 0) : -donorsNumber...(-1)
-            secondRange = (donorsNumber == 0) ? Range(start: 0, end: 0) : -donorsNumber...(-1)
-        case .DonorAcceptor:
-            firstRange = (donorsNumber == 0) ? Range(start: 0, end: 0) : -donorsNumber...(-1)
-            secondRange = (acceptorsNumber == 0) ? Range(start: 0, end: 0) : 1...acceptorsNumber
-        case .AcceptorAcceptor:
-            firstRange = (acceptorsNumber == 0) ? Range(start: 0, end: 0) : 1...acceptorsNumber
-            secondRange = (acceptorsNumber == 0) ? Range(start: 0, end: 0) : 1...acceptorsNumber
+        case .donorDonor:
+            firstRange = (donorsNumber == 0) ? (0 ..< 0) : -donorsNumber...(-1)
+            secondRange = (donorsNumber == 0) ? (0 ..< 0) : -donorsNumber...(-1)
+        case .donorAcceptor:
+            firstRange = (donorsNumber == 0) ? (0 ..< 0) : -donorsNumber...(-1)
+            secondRange = (acceptorsNumber == 0) ? (0 ..< 0) : 1...acceptorsNumber
+        case .acceptorAcceptor:
+            firstRange = (acceptorsNumber == 0) ? (0 ..< 0) : 1...acceptorsNumber
+            secondRange = (acceptorsNumber == 0) ? (0 ..< 0) : 1...acceptorsNumber
         }
         
         return (first: firstRange, second: secondRange)
@@ -208,11 +208,11 @@ class Molecule {
         }
     }
     
-    func distanceToMolecule(otherMolecule: Molecule) -> Double {
+    func distanceToMolecule(_ otherMolecule: Molecule) -> Double {
         return sqrt(pow(self.x - otherMolecule.x, 2) + pow(self.y - otherMolecule.y, 2) + pow(self.z - otherMolecule.z, 2))
     }
     
-    func kTRelativeToMolecule(otherMolecule: Molecule) -> Double {
+    func kTRelativeToMolecule(_ otherMolecule: Molecule) -> Double {
         return pow((sin(self.directionTheta) * sin(otherMolecule.directionTheta) * cos(self.directionPhi - otherMolecule.directionPhi) - 2 * cos(self.directionTheta) * cos(otherMolecule.directionTheta)), 2) / pow(self.distanceToMolecule(otherMolecule), 6)
     }
 }
@@ -220,17 +220,17 @@ class Molecule {
 class Utils {
     
     enum OrderType {
-        case Ascending, Descending
+        case ascending, descending
     }
     
-    class func averageDicOfArrays(dic: [Int: [Double]]) -> [Double] {
+    class func averageDicOfArrays(_ dic: [Int: [Double]]) -> [Double] {
         var result = [Double]()
         
         var temp = [[Double]]()
         
         for (_, truc) in dic {
             
-            for (index, distance) in truc.enumerate() {
+            for (index, distance) in truc.enumerated() {
                 if temp.count <= index {
                     temp.append([distance])
                 } else {
@@ -240,7 +240,7 @@ class Utils {
         }
         
         for array in temp {
-            let sum = array.reduce(0, combine: {$0 + $1})
+            let sum = array.reduce(0, {$0 + $1})
             result.append(sum / Double(array.count))
         }
         

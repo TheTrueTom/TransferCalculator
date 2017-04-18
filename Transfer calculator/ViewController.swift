@@ -22,25 +22,25 @@ class ViewController: NSViewController {
     @IBOutlet weak var resultsTable: NSTableView!
     
     @IBOutlet weak var generateOneParticleButton: NSButton!
-    @IBAction func generateOneParticle(sender: AnyObject) {
+    @IBAction func generateOneParticle(_ sender: AnyObject) {
         if let job = createJob(), particule = job.generateParticule() {
             currentJob = job
             particleView.particule = particule
-            calculateDistancesButton.enabled = true
+            calculateDistancesButton.isEnabled = true
         }
     }
     
     @IBOutlet weak var calculateDistancesButton: NSButton!
-    @IBAction func calculateDistances(sender: AnyObject) {
+    @IBAction func calculateDistances(_ sender: AnyObject) {
         if let particule = particleView.particule {
             distancesResult = Job.calculateAllDistances(particule)
-            calculateDistancesButton.enabled = false
+            calculateDistancesButton.isEnabled = false
         }
     }
     
     @IBOutlet weak var repeatsNumberTextField: NSTextField!
     @IBOutlet weak var repeatCycleButton: NSButton!
-    @IBAction func repeatCycle(sender: AnyObject) {
+    @IBAction func repeatCycle(_ sender: AnyObject) {
         if let job = createJob() {
             currentJob = job
             
@@ -48,21 +48,21 @@ class ViewController: NSViewController {
             self.progressIndicator.maxValue = Double(job.repeats)
             changeUIAvailability(false)
             self.setCalculatingStatus()
-            self.cancelButton.enabled = true
+            self.cancelButton.isEnabled = true
             
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+            DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async {
                 let _ = job.getAverageDistances(job.repeats, repeatCompletionHandler: {
-                    dispatch_async(dispatch_get_main_queue()) {
-                        self.progressIndicator.incrementBy(1)
+                    DispatchQueue.main.async {
+                        self.progressIndicator.increment(by: 1)
                         self.distancesResult = job.distancesResult
                         self.particleView.particule = job.currentParticule
                     }
                 })
                 
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     self.setAvailableStatus()
                     self.changeUIAvailability(true)
-                    self.cancelButton.enabled = false
+                    self.cancelButton.isEnabled = false
                 }
             }
         }
@@ -70,8 +70,8 @@ class ViewController: NSViewController {
     
     @IBOutlet weak var relationSelector: NSPopUpButton!
     @IBOutlet weak var maxKTButton: NSButton!
-    @IBAction func maxKTAsCSV(sender: AnyObject) {
-        let relation: RelationType = (relationSelector.title == "Donor-Donor") ? .DonorDonor : ((relationSelector.title == "Donor-Acceptor") ? .DonorAcceptor : .AcceptorAcceptor)
+    @IBAction func maxKTAsCSV(_ sender: AnyObject) {
+        let relation: RelationType = (relationSelector.title == "Donor-Donor") ? .donorDonor : ((relationSelector.title == "Donor-Acceptor") ? .donorAcceptor : .acceptorAcceptor)
         
         if let job = createJob() {
             currentJob = job
@@ -80,17 +80,17 @@ class ViewController: NSViewController {
             self.progressIndicator.maxValue = Double(job.repeats)
             changeUIAvailability(false)
             self.setCalculatingStatus()
-            self.cancelButton.enabled = true
+            self.cancelButton.isEnabled = true
             
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+            DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async {
                 let result = job.maxKTAsCSV(relation, repeats: job.repeats, repeatCompletionHandler: {
-                    dispatch_async(dispatch_get_main_queue()) {
-                        self.progressIndicator.incrementBy(1)
+                    DispatchQueue.main.async {
+                        self.progressIndicator.increment(by: 1)
                         self.particleView.particule = job.currentParticule
                     }
                 })
                 
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     var csvData = "distance (nm), kT,\n"
                 
                     for element in result {
@@ -109,10 +109,10 @@ class ViewController: NSViewController {
                     let saveResult = saveDialog.runModal()
                     
                     if saveResult == NSFileHandlingPanelOKButton {
-                        if let path = saveDialog.URL?.path {
-                            NSFileManager.defaultManager().createFileAtPath(path, contents: nil, attributes: nil)
+                        if let path = saveDialog.url?.path {
+                            FileManager.default.createFile(atPath: path, contents: nil, attributes: nil)
                             do {
-                                try csvData.writeToFile(path, atomically: true, encoding: NSUTF8StringEncoding)
+                                try csvData.write(toFile: path, atomically: true, encoding: String.Encoding.utf8)
                                 self.changeUIAvailability(true)
                             } catch let error as NSError {
                                 let alert = NSAlert(error: error)
@@ -128,14 +128,14 @@ class ViewController: NSViewController {
     }
     
     @IBOutlet weak var cancelButton: NSButton!
-    @IBAction func cancelAllOperations(sender: AnyObject) {
+    @IBAction func cancelAllOperations(_ sender: AnyObject) {
         currentJob?.cancelAll()
         
-        cancelButton.enabled = false
+        cancelButton.isEnabled = false
         cancelButton.title = "Operation canceled, please wait..."
         setUnavailableStatus()
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async {
             self.currentJob?.queue?.waitUntilAllOperationsAreFinished()
             self.cancelButton.title = "Cancel All Operations"
             self.setAvailableStatus()
@@ -143,11 +143,11 @@ class ViewController: NSViewController {
     }
     
     @IBOutlet weak var countryModeButton: NSPopUpButton!
-    @IBAction func changeCountryMode(sender: AnyObject) {
+    @IBAction func changeCountryMode(_ sender: AnyObject) {
         if countryModeButton.title == "🇮🇹" {
             particleView.donorColor = NSColor(calibratedRed: 0, green: 0.5, blue: 0, alpha: 1)
         } else {
-            particleView.donorColor = NSColor.blueColor()
+            particleView.donorColor = NSColor.blue
         }
     }
     
@@ -166,11 +166,11 @@ class ViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        resultsTable.setDataSource(self)
-        resultsTable.setDelegate(self)
+        resultsTable.dataSource = self
+        resultsTable.delegate = self
         
-        cancelButton.enabled = false
-        calculateDistancesButton.enabled = false
+        cancelButton.isEnabled = false
+        calculateDistancesButton.isEnabled = false
     }
     
     /* -----------------------------------------------------------------------
@@ -196,8 +196,8 @@ class ViewController: NSViewController {
         job.exclusionRadius = exclusionRadius
         job.dimerProbability = dimerProbability
         job.repeats = repeats
-        job.kTCalculations = (relationSelector.title == "Donor-Donor") ? .DonorDonor : ((relationSelector.title == "Donor-Acceptor") ? .DonorAcceptor : .AcceptorAcceptor)
-        job.status = .Queued
+        job.kTCalculations = (relationSelector.title == "Donor-Donor") ? .donorDonor : ((relationSelector.title == "Donor-Acceptor") ? .donorAcceptor : .acceptorAcceptor)
+        job.status = .queued
         
         return job
     }
@@ -224,29 +224,29 @@ class ViewController: NSViewController {
         statusIndicator.toolTip = "Available"
     }
     
-    func changeUIAvailability(available: Bool) {
-        particleSizeTextField.enabled = available
-        dimerProbabilityTextField.enabled = available
-        donorsNumberTextField.enabled = available
-        acceptorsNumberTextField.enabled = available
-        exclusionRadiusTextField.enabled = available
-        generateOneParticleButton.enabled = available
-        calculateDistancesButton.enabled = false
-        repeatsNumberTextField.enabled = available
-        repeatCycleButton.enabled = available
-        relationSelector.enabled = available
-        maxKTButton.enabled = available
+    func changeUIAvailability(_ available: Bool) {
+        particleSizeTextField.isEnabled = available
+        dimerProbabilityTextField.isEnabled = available
+        donorsNumberTextField.isEnabled = available
+        acceptorsNumberTextField.isEnabled = available
+        exclusionRadiusTextField.isEnabled = available
+        generateOneParticleButton.isEnabled = available
+        calculateDistancesButton.isEnabled = false
+        repeatsNumberTextField.isEnabled = available
+        repeatCycleButton.isEnabled = available
+        relationSelector.isEnabled = available
+        maxKTButton.isEnabled = available
     }
 }
 
 extension ViewController: NSTableViewDataSource, NSTableViewDelegate {
-    func numberOfRowsInTableView(tableView: NSTableView) -> Int {
+    func numberOfRows(in tableView: NSTableView) -> Int {
         guard let donDon = distancesResult["DonDon"], donAcc = distancesResult["DonAcc"], accAcc = distancesResult["AccAcc"] else { return 0 }
         
         return max(donDon.count, donAcc.count, accAcc.count)
     }
     
-    func tableView(tableView: NSTableView, objectValueForTableColumn tableColumn: NSTableColumn?, row: Int) -> AnyObject? {
+    func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?, row: Int) -> Any? {
         
         if let identifier = tableColumn?.identifier {
             switch identifier {

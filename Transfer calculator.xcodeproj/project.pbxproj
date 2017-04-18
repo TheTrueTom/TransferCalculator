@@ -186,11 +186,13 @@
 				TargetAttributes = {
 					E251E2EF1C7F5DA9005D4EC0 = {
 						CreatedOnToolsVersion = 7.2.1;
+						LastSwiftMigration = 0830;
 						TestTargetID = E2880BCB1C404CED000177B9;
 					};
 					E2880BCB1C404CED000177B9 = {
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = 2X7V934S42;
+						LastSwiftMigration = 0830;
 					};
 				};
 			};
@@ -292,6 +294,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "thetruetom.Transfer-calculatorTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Transfer calculator.app/Contents/MacOS/Transfer calculator";
 			};
 			name = Debug;
@@ -305,6 +308,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "thetruetom.Transfer-calculatorTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Transfer calculator.app/Contents/MacOS/Transfer calculator";
 			};
 			name = Release;
@@ -403,6 +407,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "thetruetom.Transfer-calculator";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -417,6 +422,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "thetruetom.Transfer-calculator";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -430,6 +436,7 @@
 				E251E2F91C7F5DA9005D4EC0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E2880BC71C404CEC000177B9 /* Build configuration list for PBXProject "Transfer calculator" */ = {
 			isa = XCConfigurationList;

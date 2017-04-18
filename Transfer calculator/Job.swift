@@ -9,17 +9,17 @@
 import Foundation
 
 enum JobStatus {
-    case Queued, InProgress, Finished, Cancelled
+    case queued, inProgress, finished, cancelled
 }
 
 enum kTJob {
-    case None, DonorDonor, DonorAcceptor, AcceptorAcceptor
+    case none, donorDonor, donorAcceptor, acceptorAcceptor
 }
 
 typealias DistancesResult = [String: [Double]]
 
 class Job: Equatable {
-    var creationDate: NSDate = NSDate()
+    var creationDate: Date = Date()
     var description: String = "Experiment #1"
     var particleRadius: Double = 25
     var donors: Int = 150
@@ -27,15 +27,15 @@ class Job: Equatable {
     var exclusionRadius: Double = 1
     var dimerProbability: Double = 0.1
     var repeats: Int = 10
-    var kTCalculations: kTJob = .None
-    var status: JobStatus = .Queued
+    var kTCalculations: kTJob = .none
+    var status: JobStatus = .queued
     
     var currentParticule: Particule?
     
     var distancesResult: DistancesResult = ["DonDon": [], "DonAcc": [], "AccAcc": []]
     var kTResult: [(distance: Double, kT: Double)] = []
     
-    var queue: NSOperationQueue?
+    var queue: OperationQueue?
     
     func cancelAll() {
         queue?.cancelAllOperations()
@@ -65,16 +65,16 @@ class Job: Equatable {
      - returns: Dictionary of an Array of distances
      */
     
-    class func calculateAllDistances(particule: Particule, limit: Int = 10) -> [String: [Double]] {
+    class func calculateAllDistances(_ particule: Particule, limit: Int = 10) -> [String: [Double]] {
         var result: [String: [Double]] = ["DonDon": [], "DonAcc": [], "AccAcc": []]
         
-        let donDon = particule.getMeanSortedDistances(.DonorDonor, limit: limit)
+        let donDon = particule.getMeanSortedDistances(.donorDonor, limit: limit)
         result.updateValue(donDon, forKey: "DonDon")
         
-        let donAcc = particule.getMeanSortedDistances(.DonorAcceptor, limit: limit)
+        let donAcc = particule.getMeanSortedDistances(.donorAcceptor, limit: limit)
         result.updateValue(donAcc, forKey: "DonAcc")
         
-        let accAcc = particule.getMeanSortedDistances(.AcceptorAcceptor, limit: limit)
+        let accAcc = particule.getMeanSortedDistances(.acceptorAcceptor, limit: limit)
         result.updateValue(accAcc, forKey: "AccAcc")
         
         return result
@@ -87,7 +87,7 @@ class Job: Equatable {
      - parameter completionHandler: Block to be executed at the end of the operation
      */
     
-    func averageRepeatResults(source: [DistancesResult], completionHandler: (() -> Void)? = nil) {
+    func averageRepeatResults(_ source: [DistancesResult], completionHandler: (() -> Void)? = nil) {
         var final: [String: [Double]] = ["DonDon": [], "DonAcc": [], "AccAcc": []]
         
         for repeatResult in source {
@@ -131,7 +131,7 @@ class Job: Equatable {
      - parameter finalCompletionHandler: Block to be executed once all the repetitions are finished
      */
     
-    func getAverageDistances(repeats: Int, repeatCompletionHandler: (() -> Void)? = nil) -> DistancesResult {
+    func getAverageDistances(_ repeats: Int, repeatCompletionHandler: (() -> Void)? = nil) -> DistancesResult {
         
         var repeatResults = [[String: [Double]]]() {
             didSet {
@@ -139,14 +139,14 @@ class Job: Equatable {
             }
         }
         
-        queue = NSOperationQueue()
+        queue = OperationQueue()
         
         for repetition in 1...repeats {
-            let operation = NSBlockOperation(block: {
+            let operation = BlockOperation(block: {
                 if let particule = self.generateParticule() {
                     let preResult = Job.calculateAllDistances(particule)
                     
-                    dispatch_sync(dispatch_get_main_queue()) {
+                    DispatchQueue.main.sync {
                         repeatResults.append(preResult)
                         
                         #if DEBUG
@@ -166,17 +166,17 @@ class Job: Equatable {
         return self.distancesResult
     }
     
-    func maxKTAsCSV(relationType: RelationType, repeats: Int, repeatCompletionHandler: (() -> Void)? = nil) -> [(distance: Double, kT: Double)] {
+    func maxKTAsCSV(_ relationType: RelationType, repeats: Int, repeatCompletionHandler: (() -> Void)? = nil) -> [(distance: Double, kT: Double)] {
         
-        queue = NSOperationQueue()
+        queue = OperationQueue()
         
         for repetition in 1...repeats {
-            let operation = NSBlockOperation(block: {
+            let operation = BlockOperation(block: {
                 if let particule = self.generateParticule() {
                     let subResult = particule.getMaxKTAsFunctionOfDistance(relationType)
                     
-                    dispatch_sync(dispatch_get_main_queue()) {
-                        self.kTResult.appendContentsOf(subResult)
+                    DispatchQueue.main.sync {
+                        self.kTResult.append(contentsOf: subResult)
                         
                         #if DEBUG
                         print("kT repetition \(repetition)/\(repeats) complete")

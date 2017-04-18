@@ -10,8 +10,8 @@ import Foundation
 import Cocoa
 
 class NSAnimatedImageView: NSImageView {
-    var timer: NSTimer = NSTimer()
-    var interval: NSTimeInterval = 0.5
+    var timer: Timer = Timer()
+    var interval: TimeInterval = 0.5
     var imagesArray: [String] = []
     var currentIndex: Int = 0
     
@@ -26,7 +26,7 @@ class NSAnimatedImageView: NSImageView {
         }
         
         if imagesArray.count > 1 {
-            timer = NSTimer.scheduledTimerWithTimeInterval(interval, target: self, selector: "changeImage", userInfo: nil, repeats: true)
+            timer = Timer.scheduledTimer(timeInterval: interval, target: self, selector: "changeImage", userInfo: nil, repeats: true)
         }
     }
 

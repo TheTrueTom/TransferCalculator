@@ -11,13 +11,13 @@ import Cocoa
 
 class ParticleView: NSView {
     
-    var donorColor: NSColor = NSColor.blueColor() {
+    var donorColor: NSColor = NSColor.blue {
         didSet {
             self.needsDisplay = true
         }
     }
     
-    var acceptorColor: NSColor = NSColor.redColor() {
+    var acceptorColor: NSColor = NSColor.red {
         didSet {
             self.needsDisplay = true
         }
@@ -29,15 +29,15 @@ class ParticleView: NSView {
         }
     }
     
-    override func drawRect(dirtyRect: NSRect) {
+    override func draw(_ dirtyRect: NSRect) {
         
         // Body of the particle
-        NSColor.whiteColor().set()
-        NSBezierPath(ovalInRect: self.bounds).fill()
+        NSColor.white.set()
+        NSBezierPath(ovalIn: self.bounds).fill()
         
         // Outer rim of the particle
-        NSColor.grayColor().set()
-        NSBezierPath(ovalInRect: self.bounds).stroke()
+        NSColor.gray.set()
+        NSBezierPath(ovalIn: self.bounds).stroke()
         
         if let particule = self.particule {
             for (index, molecule) in particule.moleculesList {

@@ -11,17 +11,17 @@ import Cocoa
 
 class SummaryBuilder {
     
-    class func createReport(jobList: [Job], url: NSURL) {
-        guard let newPath = NSURL(string: "Report.html", relativeToURL: url)?.path else { return }
+    class func createReport(_ jobList: [Job], url: URL) {
+        guard let newPath = URL(string: "Report.html", relativeTo: url)?.path else { return }
         
         var result = SummaryBuilder.createHeader()
         result += SummaryBuilder.createAllExperiments(jobList, url: url)
         result += SummaryBuilder.createFooter()
         
-        NSFileManager.defaultManager().createFileAtPath(newPath, contents: nil, attributes: nil)
+        FileManager.default.createFile(atPath: newPath, contents: nil, attributes: nil)
         
         do {
-            try result.writeToFile(newPath, atomically: true, encoding: NSUTF8StringEncoding)
+            try result.write(toFile: newPath, atomically: true, encoding: String.Encoding.utf8)
             //NSWorkspace.sharedWorkspace().openFile(newPath)
         } catch let error as NSError {
             let alert = NSAlert(error: error)
@@ -29,13 +29,13 @@ class SummaryBuilder {
         }
     }
     
-    private class func createHeader() -> String {
+    fileprivate class func createHeader() -> String {
         var string = String()
     
-        if let path = NSBundle.mainBundle().pathForResource("model-header", ofType: "txt") {
+        if let path = Bundle.main.path(forResource: "model-header", ofType: "txt") {
         
             do {
-                try string = String(contentsOfFile: path, encoding: NSUTF8StringEncoding)
+                try string = String(contentsOfFile: path, encoding: String.Encoding.utf8)
             } catch let error as NSError {
                 let alert = NSAlert(error: error)
                 alert.runModal()
@@ -45,17 +45,17 @@ class SummaryBuilder {
         return string
     }
     
-    private class func createAllExperiments(jobList: [Job], url: NSURL) -> String {
+    fileprivate class func createAllExperiments(_ jobList: [Job], url: URL) -> String {
         var string = String()
         
-        for (index, job) in jobList.enumerate() {
+        for (index, job) in jobList.enumerated() {
             string += createExperiment(job, index: index, url: url)
         }
         
         return string
     }
     
-    private class func createExperiment(job: Job, index: Int, url: NSURL) -> String {
+    fileprivate class func createExperiment(_ job: Job, index: Int, url: URL) -> String {
         var string = "<div class='experiment'>"
         string += "<h2>Experiment #\(index + 1)</h2>"
         string += "<p>\(job.description)</p>"
@@ -73,7 +73,7 @@ class SummaryBuilder {
         return string
     }
     
-    private class func createParameters(job: Job) -> String {
+    fileprivate class func createParameters(_ job: Job) -> String {
         var string = "<table class='parameters'><tbody>"
         string += "<tr><td>Particle Radius</td><td>\(job.particleRadius) nm</td><td>Exclusion Radius</td><td>\(job.exclusionRadius) nm</td></tr>"
         string += "<tr><td># Donors</td><td>\(job.donors)</td><td># Acceptors</td><td>\(job.acceptors)</td></tr>"
@@ -82,7 +82,7 @@ class SummaryBuilder {
         return string
     }
     
-    private class func createDistances(distanceResults: DistancesResult) -> String {
+    fileprivate class func createDistances(_ distanceResults: DistancesResult) -> String {
         guard var donDon = distanceResults["DonDon"], var donAcc = distanceResults["DonAcc"], var accAcc = distanceResults["AccAcc"] else { return "<p>No distance results available</p>" }
         
         let maximum = max(donDon.count, donAcc.count, accAcc.count)
@@ -130,7 +130,7 @@ class SummaryBuilder {
         return string
     }
     
-    private class func createkT(job: Job, url: NSURL, index: Int) -> String {
+    fileprivate class func createkT(_ job: Job, url: URL, index: Int) -> String {
         let kTResults = job.kTResult
         
         var string = String()
@@ -144,12 +144,12 @@ class SummaryBuilder {
                 csvData += "\(element.distance), \(element.kT),\n"
             }
             
-            guard let newPath = NSURL(string: "Experiment\(index).csv", relativeToURL: url)?.path else { return "<p>No kT results available</p>" }
+            guard let newPath = URL(string: "Experiment\(index).csv", relativeTo: url)?.path else { return "<p>No kT results available</p>" }
             
-            NSFileManager.defaultManager().createFileAtPath(newPath, contents: nil, attributes: nil)
+            FileManager.default.createFile(atPath: newPath, contents: nil, attributes: nil)
             
             do {
-                try csvData.writeToFile(newPath, atomically: true, encoding: NSUTF8StringEncoding)
+                try csvData.write(toFile: newPath, atomically: true, encoding: String.Encoding.utf8)
                 string += "<p>CSV data file available at \(newPath)</p>"
             } catch let error as NSError {
                 let alert = NSAlert(error: error)
@@ -165,7 +165,7 @@ class SummaryBuilder {
         return string
     }
     
-    private class func createFooter() -> String {
+    fileprivate class func createFooter() -> String {
         var string = "</body>\n"
         string += "</html>"
         

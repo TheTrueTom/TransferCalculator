@@ -12,16 +12,16 @@ import Cocoa
 class BatchViewController: NSViewController {
     
     @IBOutlet weak var stopButton: NSButton!
-    @IBAction func stopJobList(sender: AnyObject) {
+    @IBAction func stopJobList(_ sender: AnyObject) {
         queue.cancelAllOperations()
-        currentJob?.status = .Cancelled
+        currentJob?.status = .cancelled
         jobListTable.reloadData()
     }
     
     @IBOutlet weak var playButton: NSButton!
-    @IBAction func startJobList(sender: AnyObject) {
+    @IBAction func startJobList(_ sender: AnyObject) {
         processJobList() {
-            if let url = self.pathControl.URL  {
+            if let url = self.pathControl.url  {
                 SummaryBuilder.createReport(self.jobList, url: url)
             }
         }
@@ -32,66 +32,66 @@ class BatchViewController: NSViewController {
     @IBOutlet weak var jobListTable: NSTableView!
     
     @IBOutlet weak var addButton: NSButton!
-    @IBAction func addJob(sender: AnyObject) {
+    @IBAction func addJob(_ sender: AnyObject) {
         let job = Job()
         job.description = "Experiment #\(jobListTable.numberOfRows + 1)"
         jobList.append(job)
         jobListTable.reloadData()
         
-        playButton.enabled = true
+        playButton.isEnabled = true
     }
     
     @IBOutlet weak var removeButton: NSButton!
-    @IBAction func removeJob(sender: AnyObject) {
-        jobList = jobList.filter { !jobListTable.selectedRowIndexes.containsIndex(jobList.indexOf($0)!) }
+    @IBAction func removeJob(_ sender: AnyObject) {
+        jobList = jobList.filter { !jobListTable.selectedRowIndexes.contains(jobList.index(of: $0)!) }
         
         jobListTable.reloadData()
         
         if jobList.isEmpty {
-            playButton.enabled = false
+            playButton.isEnabled = false
         }
     }
     
-    @IBAction func openJobList(sender: AnyObject) {
+    @IBAction func openJobList(_ sender: AnyObject) {
         jobList = CSVEngine.getJobListFromCSV()
         jobListTable.reloadData()
     }
     
-    @IBAction func saveJobList(sender: AnyObject) {
+    @IBAction func saveJobList(_ sender: AnyObject) {
         CSVEngine.saveAsCSV(jobList)
     }
     
     @IBOutlet weak var progressIndicator: NSProgressIndicator!
     
     var jobList: [Job] = [Job()]
-    var queue: NSOperationQueue = NSOperationQueue()
+    var queue: OperationQueue = OperationQueue()
     var currentJob: Job?
     
     var distancesResultsList = [DistancesResult]()
     var kTResultsList = [[(distance: Double, kT: Double)]]()
     
     override func viewDidLoad() {
-        jobListTable.setDelegate(self)
-        jobListTable.setDataSource(self)
+        jobListTable.delegate = self
+        jobListTable.dataSource = self
         
-        playButton.enabled = true
+        playButton.isEnabled = true
         
-        pathControl.URL = NSFileManager.defaultManager().URLsForDirectory(.DesktopDirectory, inDomains: .UserDomainMask).first
+        pathControl.url = FileManager.default.urls(for: .desktopDirectory, in: .userDomainMask).first
     }
     
-    func processJobList(completionHandler: (() -> Void)? = nil) {
-        stopButton.enabled = true
-        playButton.enabled = false
+    func processJobList(_ completionHandler: (() -> Void)? = nil) {
+        stopButton.isEnabled = true
+        playButton.isEnabled = false
         
-        queue = NSOperationQueue()
+        queue = OperationQueue()
         queue.maxConcurrentOperationCount = 1
         
         for job in jobList {
-            let operation = NSBlockOperation(block: {
+            let operation = BlockOperation(block: {
                 self.currentJob = job
                 
-                NSOperationQueue.mainQueue().addOperationWithBlock {
-                    job.status = .InProgress
+                OperationQueue.main.addOperation {
+                    job.status = .inProgress
                     self.jobListTable.reloadData()
                     
                     self.progressIndicator.doubleValue = 0
@@ -101,16 +101,16 @@ class BatchViewController: NSViewController {
                 // Calcul des distances
                 
                 let distancesResult = job.getAverageDistances(job.repeats, repeatCompletionHandler: {
-                        NSOperationQueue.mainQueue().addOperationWithBlock {
-                            self.progressIndicator.incrementBy((job.kTCalculations == .None) ? 1 : 0.5)
+                        OperationQueue.main.addOperation {
+                            self.progressIndicator.increment(by: (job.kTCalculations == .none) ? 1 : 0.5)
                         }
                     })
                 
-                NSOperationQueue.mainQueue().addOperationWithBlock {
+                OperationQueue.main.addOperation {
                     self.distancesResultsList.append(distancesResult)
                     
-                    if job.kTCalculations == .None {
-                        job.status = .Finished
+                    if job.kTCalculations == .none {
+                        job.status = .finished
                         
                         self.jobListTable.reloadData()
                         
@@ -121,19 +121,19 @@ class BatchViewController: NSViewController {
                 
                 // Calcul des kT
                 
-                if job.kTCalculations != .None {
+                if job.kTCalculations != .none {
                     
-                    let relation: RelationType = (job.kTCalculations == .DonorDonor) ? .DonorDonor : ((job.kTCalculations == .DonorAcceptor) ? .DonorAcceptor : .AcceptorAcceptor)
+                    let relation: RelationType = (job.kTCalculations == .donorDonor) ? .donorDonor : ((job.kTCalculations == .donorAcceptor) ? .donorAcceptor : .acceptorAcceptor)
                     
                     let kTResults = job.maxKTAsCSV(relation, repeats: job.repeats, repeatCompletionHandler: {
-                            NSOperationQueue.mainQueue().addOperationWithBlock {
-                                self.progressIndicator.incrementBy(0.5)
+                            OperationQueue.main.addOperation {
+                                self.progressIndicator.increment(by: 0.5)
                             }
                         })
                     
-                    NSOperationQueue.mainQueue().addOperationWithBlock {
+                    OperationQueue.main.addOperation {
                         self.kTResultsList.append(kTResults)
-                        job.status = .Finished
+                        job.status = .finished
                         
                         self.jobListTable.reloadData()
                         
@@ -145,23 +145,23 @@ class BatchViewController: NSViewController {
             queue.addOperation(operation)
         }
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async {
             self.queue.waitUntilAllOperationsAreFinished()
         
-            dispatch_async(dispatch_get_main_queue()) {
-                self.stopButton.enabled = false
-                self.playButton.enabled = true
+            DispatchQueue.main.async {
+                self.stopButton.isEnabled = false
+                self.playButton.isEnabled = true
             }
         }
     }
 }
 
 extension BatchViewController: NSTableViewDelegate, NSTableViewDataSource {
-    func numberOfRowsInTableView(tableView: NSTableView) -> Int {
+    func numberOfRows(in tableView: NSTableView) -> Int {
         return jobList.count
     }
     
-    func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
+    func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
         let job = jobList[row]
         
         if let identifier = tableColumn?.identifier {
@@ -194,67 +194,67 @@ extension BatchViewController: NSTableViewDelegate, NSTableViewDataSource {
         return nil
     }
     
-    func configureLabel(text: String, row: Int = 0, tableColumnIdentifier: String = "") -> NSTextField {
+    func configureLabel(_ text: String, row: Int = 0, tableColumnIdentifier: String = "") -> NSTextField {
         let label = CellTextField()
         label.delegate = self
         label.row = row
         label.columnIdentifier = tableColumnIdentifier
         label.stringValue = text
-        label.bordered = false
-        label.backgroundColor = NSColor.clearColor()
+        label.isBordered = false
+        label.backgroundColor = NSColor.clear
         return label
     }
     
-    func configureStatusImage(job: Job) -> NSImageView {
+    func configureStatusImage(_ job: Job) -> NSImageView {
         var imageView = NSImageView()
         
         switch job.status {
-        case .Cancelled:
+        case .cancelled:
             imageView.image = NSImage(named: "cancelled")
-        case .Finished:
+        case .finished:
             imageView.image = NSImage(named: "complete")
-        case .InProgress:
+        case .inProgress:
             imageView = NSAnimatedImageView(imageList: ["working0", "working1", "working2", "working3", "working4", "working5"])
-        case .Queued:
+        case .queued:
             imageView.image = NSImage()
         }
         
         return imageView
     }
     
-    func configurePopUpButton(job: Job, row: Int = 0, tableColumnIdentifier: String = "") -> NSPopUpButton {
+    func configurePopUpButton(_ job: Job, row: Int = 0, tableColumnIdentifier: String = "") -> NSPopUpButton {
         let popup = CellPopUpButton()
         popup.action = "popUpButtonDidChange:"
         popup.row = row
         popup.columnIdentifier = tableColumnIdentifier
-        popup.addItemsWithTitles(["None","Donor-Donor","Donor-Acceptor","Acceptor-Acceptor"])
+        popup.addItems(withTitles: ["None","Donor-Donor","Donor-Acceptor","Acceptor-Acceptor"])
         
         let title: String!
-        if job.kTCalculations == .None {
+        if job.kTCalculations == .none {
             title = "None"
-        } else if job.kTCalculations == .DonorDonor {
+        } else if job.kTCalculations == .donorDonor {
             title = "Donor-Donor"
-        } else if job.kTCalculations == .DonorAcceptor {
+        } else if job.kTCalculations == .donorAcceptor {
             title = "Donor-Acceptor"
         } else {
             title = "Acceptor-Acceptor"
         }
         
-        popup.selectItemWithTitle(title)
+        popup.selectItem(withTitle: title)
         return popup
     }
     
-    func tableViewSelectionDidChange(notification: NSNotification) {
+    func tableViewSelectionDidChange(_ notification: Notification) {
         if jobListTable.selectedRowIndexes.count != 0 {
-            removeButton.enabled = true
+            removeButton.isEnabled = true
         } else {
-            removeButton.enabled = false
+            removeButton.isEnabled = false
         }
     }
 }
 
 extension BatchViewController: NSTextFieldDelegate {
-    override func controlTextDidEndEditing(obj: NSNotification) {
+    override func controlTextDidEndEditing(_ obj: Notification) {
         
         if let cellTextField = obj.object as? CellTextField {
             let job = jobList[cellTextField.row]
@@ -292,20 +292,20 @@ extension BatchViewController: NSTextFieldDelegate {
         }
     }
     
-    func popUpButtonDidChange(obj: AnyObject) {
+    func popUpButtonDidChange(_ obj: AnyObject) {
         
         if let popUpButton = obj as? CellPopUpButton {
             let job = jobList[popUpButton.row]
             
             switch popUpButton.title {
             case "None":
-                job.kTCalculations = .None
+                job.kTCalculations = .none
             case "Donor-Donor":
-                job.kTCalculations = .DonorDonor
+                job.kTCalculations = .donorDonor
             case "Donor-Acceptor":
-                job.kTCalculations = .DonorAcceptor
+                job.kTCalculations = .donorAcceptor
             case "Acceptor-Acceptor":
-                job.kTCalculations = .AcceptorAcceptor
+                job.kTCalculations = .acceptorAcceptor
             default:
                 return
             }
