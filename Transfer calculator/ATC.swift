@@ -163,14 +163,14 @@ class Particule {
         
         switch relationType {
         case .donorDonor:
-            firstRange = (donorsNumber == 0) ? (0 ..< 0) : -donorsNumber...(-1)
-            secondRange = (donorsNumber == 0) ? (0 ..< 0) : -donorsNumber...(-1)
+            firstRange = (donorsNumber == 0) ? (0 ..< 0) : -donorsNumber..<(0)
+            secondRange = (donorsNumber == 0) ? (0 ..< 0) : -donorsNumber..<(0)
         case .donorAcceptor:
-            firstRange = (donorsNumber == 0) ? (0 ..< 0) : -donorsNumber...(-1)
-            secondRange = (acceptorsNumber == 0) ? (0 ..< 0) : 1...acceptorsNumber
+            firstRange = (donorsNumber == 0) ? (0 ..< 0) : -donorsNumber..<(0)
+            secondRange = (acceptorsNumber == 0) ? (0 ..< 0) : 1..<(acceptorsNumber + 1)
         case .acceptorAcceptor:
-            firstRange = (acceptorsNumber == 0) ? (0 ..< 0) : 1...acceptorsNumber
-            secondRange = (acceptorsNumber == 0) ? (0 ..< 0) : 1...acceptorsNumber
+            firstRange = (acceptorsNumber == 0) ? (0 ..< 0) : 1..<(acceptorsNumber + 1)
+            secondRange = (acceptorsNumber == 0) ? (0 ..< 0) : 1..<(acceptorsNumber + 1)
         }
         
         return (first: firstRange, second: secondRange)

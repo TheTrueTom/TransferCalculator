@@ -92,7 +92,7 @@ class Job: Equatable {
         
         for repeatResult in source {
             for (key, list) in repeatResult {
-                if let meanList = final[key] where !meanList.isEmpty {
+                if let meanList = final[key], !meanList.isEmpty {
                     var temp: [Double] = []
                     
                     for i in 0..<list.count {
@@ -102,7 +102,7 @@ class Job: Equatable {
                     final.updateValue(temp, forKey: key)
                 }
                 
-                if let meanList = final[key] where meanList.isEmpty {
+                if let meanList = final[key], meanList.isEmpty {
                     final.updateValue(list, forKey: key)
                 }
             }

@@ -23,7 +23,7 @@ class ViewController: NSViewController {
     
     @IBOutlet weak var generateOneParticleButton: NSButton!
     @IBAction func generateOneParticle(_ sender: AnyObject) {
-        if let job = createJob(), particule = job.generateParticule() {
+        if let job = createJob(), let particule = job.generateParticule() {
             currentJob = job
             particleView.particule = particule
             calculateDistancesButton.isEnabled = true
@@ -181,11 +181,11 @@ class ViewController: NSViewController {
     
     func createJob() -> Job? {
         guard let radius = Double(particleSizeTextField.stringValue),
-            donors = Int(donorsNumberTextField.stringValue),
-            acceptors = Int(acceptorsNumberTextField.stringValue),
-            exclusionRadius = Double(exclusionRadiusTextField.stringValue),
-            dimerProbability = Double(dimerProbabilityTextField.stringValue),
-            repeats = Int(repeatsNumberTextField.stringValue)
+            let donors = Int(donorsNumberTextField.stringValue),
+            let acceptors = Int(acceptorsNumberTextField.stringValue),
+            let exclusionRadius = Double(exclusionRadiusTextField.stringValue),
+            let dimerProbability = Double(dimerProbabilityTextField.stringValue),
+            let repeats = Int(repeatsNumberTextField.stringValue)
             else { return nil }
         
         let job = Job()
@@ -241,7 +241,7 @@ class ViewController: NSViewController {
 
 extension ViewController: NSTableViewDataSource, NSTableViewDelegate {
     func numberOfRows(in tableView: NSTableView) -> Int {
-        guard let donDon = distancesResult["DonDon"], donAcc = distancesResult["DonAcc"], accAcc = distancesResult["AccAcc"] else { return 0 }
+        guard let donDon = distancesResult["DonDon"], let donAcc = distancesResult["DonAcc"], let accAcc = distancesResult["AccAcc"] else { return 0 }
         
         return max(donDon.count, donAcc.count, accAcc.count)
     }
