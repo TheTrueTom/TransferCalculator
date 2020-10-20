@@ -30,12 +30,12 @@ class Particule {
     var distanceTable: [Int: [Int: Double]] = [:]
     var kTTable: [Int: [Int: Double]] = [:]
     
-    init(radius: Double, donors: Int, acceptors: Int, exclusionRadius: Double, dimerProbability: Double) {
+    init(radius: Double, kernelRadius: Double, donors: Int, acceptors: Int, exclusionRadius: Double, dimerProbability: Double) {
         
         self.radius = radius
         
        while self.acceptorsNumber < acceptors {
-           let candidate = Molecule(inParticleOfRadius: radius, withDimerProbability: dimerProbability)
+        let candidate = Molecule(inParticleOfRadius: radius, withKernelRadius: kernelRadius, withDimerProbability: dimerProbability)
            
            var isTooClose = false
            
@@ -54,7 +54,7 @@ class Particule {
        }
        
        while self.donorsNumber < donors {
-           let candidate = Molecule(inParticleOfRadius: radius, withDimerProbability: dimerProbability)
+           let candidate = Molecule(inParticleOfRadius: radius, withKernelRadius: kernelRadius,withDimerProbability: dimerProbability)
            
            var isTooClose = false
            
@@ -193,8 +193,13 @@ class Molecule {
     
     var isDimer: Bool = false
     
-    init(inParticleOfRadius radius: Double, withDimerProbability dimerProbability: Double) {
+    init(inParticleOfRadius radius: Double, withKernelRadius kernelRadius: Double, withDimerProbability dimerProbability: Double) {
         self.radius = sqrt(randomDouble()) * radius
+        
+        while self.radius < kernelRadius {
+            self.radius = sqrt(randomDouble()) * radius
+        }
+        
         self.theta = -1 + randomDouble() * 2
         self.phi = 2 * .pi * randomDouble()
         

@@ -34,7 +34,7 @@ class NSAnimatedImageView: NSImageView {
         super.init(coder: coder)
     }
     
-    func changeImage() {
+    @objc func changeImage() {
         currentIndex += 1
         
         if currentIndex >= imagesArray.count {

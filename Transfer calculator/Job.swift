@@ -22,6 +22,7 @@ class Job: Equatable {
     var creationDate: Date = Date()
     var description: String = "Experiment #1"
     var particleRadius: Double = 25
+    var kernelRadius: Double = 5
     var donors: Int = 150
     var acceptors: Int = 150
     var exclusionRadius: Double = 1
@@ -49,7 +50,7 @@ class Job: Equatable {
     
     func generateParticule() -> Particule? {
         
-        let particule = Particule(radius: particleRadius, donors: donors, acceptors: acceptors, exclusionRadius: exclusionRadius, dimerProbability: dimerProbability)
+        let particule = Particule(radius: particleRadius, kernelRadius: kernelRadius, donors: donors, acceptors: acceptors, exclusionRadius: exclusionRadius, dimerProbability: dimerProbability)
         
         currentParticule = particule
         
@@ -198,8 +199,8 @@ class Job: Equatable {
 }
 
 extension Job: Hashable {
-    var hashValue: Int {
-        return creationDate.hashValue
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(creationDate)
     }
 }
 

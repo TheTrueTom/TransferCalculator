@@ -27,7 +27,7 @@ class CSVEngine {
         
         let saveResult = saveDialog.runModal()
         
-        if saveResult == NSFileHandlingPanelOKButton {
+        if saveResult.rawValue == NSFileHandlingPanelOKButton {
             if let path = saveDialog.url?.path {
                 FileManager.default.createFile(atPath: path, contents: nil, attributes: nil)
                 do {
@@ -50,7 +50,7 @@ class CSVEngine {
         
         let openResult = openDialog.runModal()
         
-        if openResult == NSFileHandlingPanelOKButton {
+        if openResult.rawValue == NSFileHandlingPanelOKButton {
             if let path = openDialog.url?.path {
                 do {
                     try csvString = String(contentsOfFile: path, encoding: String.Encoding.utf8)

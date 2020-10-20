@@ -13,6 +13,7 @@ class ViewController: NSViewController {
     @IBOutlet weak var particleView: ParticleView!
     
     @IBOutlet weak var particleSizeTextField: NSTextField!
+    @IBOutlet weak var kernelSizeTextField: NSTextField!
     @IBOutlet weak var dimerProbabilityTextField: NSTextField!
     
     @IBOutlet weak var donorsNumberTextField: NSTextField!
@@ -108,7 +109,7 @@ class ViewController: NSViewController {
                 
                     let saveResult = saveDialog.runModal()
                     
-                    if saveResult == NSFileHandlingPanelOKButton {
+                    if saveResult.rawValue == NSFileHandlingPanelOKButton {
                         if let path = saveDialog.url?.path {
                             FileManager.default.createFile(atPath: path, contents: nil, attributes: nil)
                             do {
@@ -248,7 +249,8 @@ extension ViewController: NSTableViewDataSource, NSTableViewDelegate {
     
     func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?, row: Int) -> Any? {
         
-        if let identifier = tableColumn?.identifier {
+        if let column = tableColumn {
+            let identifier = convertFromNSUserInterfaceItemIdentifier(column.identifier)
             switch identifier {
             case "PosCol":
                 return row + 1
@@ -285,3 +287,8 @@ extension ViewController: NSTableViewDataSource, NSTableViewDelegate {
     }
 }
 
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromNSUserInterfaceItemIdentifier(_ input: NSUserInterfaceItemIdentifier) -> String {
+	return input.rawValue
+}

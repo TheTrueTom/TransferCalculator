@@ -43,7 +43,7 @@ class BatchViewController: NSViewController {
     
     @IBOutlet weak var removeButton: NSButton!
     @IBAction func removeJob(_ sender: AnyObject) {
-        jobList = jobList.filter { !jobListTable.selectedRowIndexes.contains(jobList.index(of: $0)!) }
+        jobList = jobList.filter { !jobListTable.selectedRowIndexes.contains(jobList.firstIndex(of: $0)!) }
         
         jobListTable.reloadData()
         
@@ -164,7 +164,8 @@ extension BatchViewController: NSTableViewDelegate, NSTableViewDataSource {
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
         let job = jobList[row]
         
-        if let identifier = tableColumn?.identifier {
+        if let column = tableColumn {
+            let identifier = convertFromNSUserInterfaceItemIdentifier(column.identifier)
             switch identifier {
             case "numberCol":
                 return configureLabel("\(row + 1)")
@@ -254,7 +255,7 @@ extension BatchViewController: NSTableViewDelegate, NSTableViewDataSource {
 }
 
 extension BatchViewController: NSTextFieldDelegate {
-    override func controlTextDidEndEditing(_ obj: Notification) {
+    func controlTextDidEndEditing(_ obj: Notification) {
         
         if let cellTextField = obj.object as? CellTextField {
             let job = jobList[cellTextField.row]
@@ -292,7 +293,7 @@ extension BatchViewController: NSTextFieldDelegate {
         }
     }
     
-    func popUpButtonDidChange(_ obj: AnyObject) {
+    @objc func popUpButtonDidChange(_ obj: AnyObject) {
         
         if let popUpButton = obj as? CellPopUpButton {
             let job = jobList[popUpButton.row]
@@ -311,4 +312,9 @@ extension BatchViewController: NSTextFieldDelegate {
             }
         }
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromNSUserInterfaceItemIdentifier(_ input: NSUserInterfaceItemIdentifier) -> String {
+	return input.rawValue
 }
